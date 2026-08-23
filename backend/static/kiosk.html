@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Check-In Kiosk — Solstice Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css" />
+<link rel="stylesheet" href="/static/nav.css" />
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand" href="/">
+    <span class="badge-mark">SEC</span>
+    <span class="brand-name">Solstice Check-In</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/kiosk">Check-In Kiosk</a>
+    <a href="/badges">Badges</a>
+    <a href="/how-it-works">How It Works</a>
+  </div>
+</nav>
+
+<p class="pivot-note" style="margin-top:16px;">
+  Scan a badge to check an attendee in. The badge is queued for printing and the screen shows
+  <code>printing…</code> until the printer actually confirms &mdash; so what you see always
+  matches what's in the attendee's hand. Scanning the same badge again while it's printing, or
+  after it's already checked in, is rejected automatically.
+</p>
+
+<div class="qr-panel" id="qr-panel">
+  <div class="qr-panel-header">
+    <button class="qr-toggle" type="button">SCAN VIA CAMERA</button>
+    <label class="qr-file-label">
+      or upload a badge photo
+      <input type="file" accept="image/*" class="qr-file-input" />
+    </label>
+  </div>
+  <div class="qr-reader" id="qr-reader-day4"></div>
+  <div class="qr-status"></div>
+</div>
+
+<div class="header-right" style="padding: 0 32px 8px; justify-content: flex-end; display:flex;">
+  <div class="conn-dot" id="conn-dot"></div>
+  <span id="conn-label" style="margin-left:8px; font-family: var(--font-mono); font-size:12px; color: var(--text-muted);">connecting…</span>
+</div>
+
+<main class="kiosk-main">
+  <section class="attendee-grid" id="attendee-grid" aria-label="Attendees"></section>
+
+  <section class="log-panel" aria-label="Live activity">
+    <div class="log-header">
+      <span>LIVE ACTIVITY</span>
+      <button id="clear-log" class="ghost-btn">clear</button>
+    </div>
+    <div class="log-body" id="log-body"></div>
+  </section>
+</main>
+
+<p style="text-align:center; color: var(--text-muted); font-size: 12px; padding-bottom: 30px;">
+  Curious how this stays duplicate-proof even when confirmations arrive out of order?
+  <a href="/how-it-works" style="color: var(--amber);">Read how it works →</a>
+</p>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="/static/qr-scanner.js"></script>
+<script src="/static/app_day4.js"></script>
+<script src="/static/nav.js"></script>
+</body>
+</html>

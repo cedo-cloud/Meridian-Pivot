@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Day 5 — Refactor &amp; Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css" />
+<link rel="stylesheet" href="/static/nav.css" />
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand" href="/">
+    <span class="badge-mark">SEC</span>
+    <span class="brand-name">Solstice Events Co.</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Overview</a>
+    <a href="/day1">Day 1&ndash;2</a>
+    <a class="tag-deprecated" href="/day3">Day 3 &middot; deprecated</a>
+    <a class="tag-live" href="/day4">Day 4 &middot; live</a>
+    <a href="/day5">Day 5</a>
+    <a href="/badges">Badges</a>
+  </div>
+</nav>
+
+<div class="content-shell">
+  <h2 style="margin-top:0;">Assignment 2 &mdash; Scope Delta Analysis</h2>
+
+  <p><strong>Dropped</strong></p>
+  <ul>
+    <li>Synchronous, blocking call to the printer vendor's REST API — the kiosk no longer waits on an HTTP response before doing anything else.</li>
+    <li>The old "success response → show Checked In" shortcut. There's now a real intermediate state (<code>pending</code>) the UI has to render honestly.</li>
+  </ul>
+
+  <p><strong>Modified</strong></p>
+  <ul>
+    <li>Duplicate-scan protection: it now has to hold across the <code>pending</code> window, and survive webhook confirmations arriving <strong>out of order</strong> relative to when badges were scanned. Implemented via a per-attendee <code>active_job_id</code> — a webhook only advances the state it was issued for.</li>
+    <li>The attendee state machine grew from a two-state model (not-checked-in / checked-in) to <code>not_checked_in → pending → checked_in</code>, plus <code>print_failed</code> as a recovery branch.</li>
+  </ul>
+
+  <p><strong>Added</strong></p>
+  <ul>
+    <li>A real webhook endpoint (<code>POST /api/pivot/webhook/print-complete</code>) that didn't exist before — the kiosk now exposes something to the outside world instead of only calling out.</li>
+    <li>Idempotency handling for webhook retries, and staleness handling for a job superseded by a later scan.</li>
+    <li>A <code>print_failed</code> recovery path — not explicitly required by the brief, but without it a failed print leaves an attendee stuck in <code>pending</code> forever. Flagged here as an addition beyond the literal spec, not left silent.</li>
+  </ul>
+
+  <p><strong>Regression check</strong></p>
+  <p>
+    All original acceptance behaviors still hold under the new model: at least 3 attendees supported,
+    a result shown on screen, and a duplicate scan of an already-in-progress or already-checked-in
+    attendee never produces a second print job. Verified directly against the running Day 4 server
+    (duplicate scan while pending → 409, duplicate after check-in → 409, replayed webhook → no-op
+    the second time, unknown/stale job → safely ignored).
+  </p>
+
+  <p><strong>Obsolete code</strong></p>
+  <p>
+    The pre-pivot synchronous flow is not running alongside the live kiosk — it's isolated in its own
+    module (<code>/api/original/*</code>) and its own page (<a href="/day3" style="color:var(--red)">/day3</a>),
+    explicitly labeled deprecated, kept only so this comparison has something real to point at.
+  </p>
+
+  <h2>Assignment 3 &mdash; Individual Adaptability Index (confidential)</h2>
+  <div class="confidential-note">
+    This is your own honest self-assessment of how <em>you</em> held up during the Day 4 pivot &mdash;
+    composure, communication, flexibility, contribution, rehire. It's confidential and shouldn't be
+    shared verbatim with teammates. Fill it in yourself; nothing below is pre-filled.
+  </div>
+
+  <div class="field-group">
+    <label>Composure under the pivot</label>
+    <div class="rating-row">
+      <label><input type="radio" name="composure" value="1">1</label>
+      <label><input type="radio" name="composure" value="2">2</label>
+      <label><input type="radio" name="composure" value="3">3</label>
+      <label><input type="radio" name="composure" value="4">4</label>
+      <label><input type="radio" name="composure" value="5">5</label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label>Communication during the change</label>
+    <div class="rating-row">
+      <label><input type="radio" name="communication" value="1">1</label>
+      <label><input type="radio" name="communication" value="2">2</label>
+      <label><input type="radio" name="communication" value="3">3</label>
+      <label><input type="radio" name="communication" value="4">4</label>
+      <label><input type="radio" name="communication" value="5">5</label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label>Flexibility (letting go of the original plan)</label>
+    <div class="rating-row">
+      <label><input type="radio" name="flexibility" value="1">1</label>
+      <label><input type="radio" name="flexibility" value="2">2</label>
+      <label><input type="radio" name="flexibility" value="3">3</label>
+      <label><input type="radio" name="flexibility" value="4">4</label>
+      <label><input type="radio" name="flexibility" value="5">5</label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label>What actually happened for you on Day 4, honestly</label>
+    <textarea rows="6" placeholder="What was your first reaction to the pivot? What did you drop, keep, or scramble on? Where did you get stuck?"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label>Would you rehire yourself for this sprint? Why?</label>
+    <textarea rows="3"></textarea>
+  </div>
+
+  <button class="save-btn" type="button" onclick="window.print()">PRINT / SAVE AS PDF</button>
+</div>
+
+<script src="/static/nav.js"></script>
+</body>
+</html>

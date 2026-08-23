@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How It Works — Solstice Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css" />
+<link rel="stylesheet" href="/static/nav.css" />
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand" href="/">
+    <span class="badge-mark">SEC</span>
+    <span class="brand-name">Solstice Check-In</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/kiosk">Check-In Kiosk</a>
+    <a href="/badges">Badges</a>
+    <a href="/how-it-works">How It Works</a>
+  </div>
+</nav>
+
+<div class="content-shell">
+  <h2 style="margin-top:0;">Why a badge can never print twice</h2>
+  <p>
+    Printers are slow, sometimes offline, and never instant. A check-in system that assumes the
+    printer will always answer right away breaks the moment it doesn't &mdash; either the screen
+    lies about what's actually printed, or a second scan sneaks a duplicate badge through while
+    the first one is still working.
+  </p>
+  <p>
+    Solstice Check-In is built around a queue-and-confirm model instead. A scan doesn't print
+    anything directly &mdash; it queues a print job and waits for the printer to actually confirm
+    it's done, however long that takes. The screen only ever shows what's true right now:
+    <code>pending</code> while a badge is printing, <code>checked in</code> only once it's
+    confirmed.
+  </p>
+
+  <h2>Duplicate protection that holds under real conditions</h2>
+  <p>
+    Two problems come up once printing is no longer instant: a desk can get scanned twice before
+    the first badge finishes, and confirmations for different attendees can come back in a
+    different order than they were scanned in &mdash; busier printers process jobs on their own
+    schedule, not first-in-first-out.
+  </p>
+  <p>
+    Every scan gets its own job. An attendee only has one active job at a time, and a printer
+    confirmation only counts if it matches that attendee's <em>current</em> job &mdash; a stale or
+    repeated confirmation is safely ignored rather than double-counted. That's what makes it safe
+    for a second scan of an already-printing or already-checked-in badge to be rejected instantly,
+    and for print confirmations to complete in any order without ever mixing up who got checked in.
+  </p>
+
+  <h2>What happens when a print actually fails</h2>
+  <p>
+    If the printer reports a failure instead of a success, the attendee isn't left stuck on
+    <code>pending</code> forever &mdash; the badge is released back to "not checked in" so staff
+    can simply rescan it.
+  </p>
+
+  <h2>Built to be replaced, on short notice</h2>
+  <p>
+    This system replaced an earlier version that called the badge printer directly and waited for
+    an answer before doing anything else &mdash; simple, but it stalled the whole kiosk any time
+    the printer was slow, and it had no way to recover from a failed print except starting over.
+    <a href="/legacy" style="color: var(--amber);">See the retired system →</a>
+  </p>
+</div>
+
+<script src="/static/nav.js"></script>
+</body>
+</html>

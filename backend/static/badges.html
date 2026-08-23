@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Badges — Solstice Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css" />
+<link rel="stylesheet" href="/static/nav.css" />
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand" href="/">
+    <span class="badge-mark">SEC</span>
+    <span class="brand-name">Solstice Check-In</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/kiosk">Check-In Kiosk</a>
+    <a href="/badges">Badges</a>
+    <a href="/how-it-works">How It Works</a>
+  </div>
+</nav>
+
+<div class="content-shell" style="padding-bottom: 0;">
+  <h2 style="margin-top:0; border-bottom:none;">Attendee badges</h2>
+  <p>
+    Each badge is a QR code encoding the attendee's ID (e.g. <code>A-101</code>). Print these
+    ahead of the event or generate them at the door, then scan any of them from the
+    <a href="/kiosk" style="color:var(--amber)">check-in kiosk</a> &mdash; by camera, by uploading
+    a photo, or with the manual buttons on each kiosk card.
+  </p>
+</div>
+
+<div class="badge-grid" id="badge-grid"></div>
+
+<script>
+  fetch("/api/roster")
+    .then((r) => r.json())
+    .then((roster) => {
+      const grid = document.getElementById("badge-grid");
+      grid.innerHTML = roster.map((a) => `
+        <div class="badge-card">
+          <img src="/api/badges/${a.id}.png" alt="QR code for ${a.name}" />
+          <div class="badge-card-name">${a.name}</div>
+          <div class="badge-card-id">${a.id}</div>
+        </div>
+      `).join("");
+    });
+</script>
+<script src="/static/nav.js"></script>
+</body>
+</html>

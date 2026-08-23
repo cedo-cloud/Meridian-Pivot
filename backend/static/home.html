@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Solstice Check-In — Badge check-in that never double-prints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css" />
+<link rel="stylesheet" href="/static/nav.css" />
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand" href="/">
+    <span class="badge-mark">SEC</span>
+    <span class="brand-name">Solstice Check-In</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/kiosk">Check-In Kiosk</a>
+    <a href="/badges">Badges</a>
+    <a href="/how-it-works">How It Works</a>
+  </div>
+</nav>
+
+<div class="content-shell">
+  <h2 style="margin-top:0; border-bottom:none; padding-bottom:0;">Badge check-in that never double-prints.</h2>
+  <p>
+    Solstice Check-In runs registration for multi-day conferences: scan a badge, print it, done.
+    It's built around a simple rule — the screen never says "Checked In" until the badge has
+    actually printed, and no attendee can ever get printed twice, no matter how many times a
+    desk gets scanned or how the printer responds.
+  </p>
+  <p>
+    <a href="/kiosk" style="color: var(--amber);">Open the check-in kiosk →</a>
+    &nbsp;&nbsp;
+    <a href="/badges" style="color: var(--amber);">Generate attendee badges →</a>
+  </p>
+</div>
+
+<div class="day-grid">
+  <a class="day-card" href="/kiosk">
+    <div class="day-tag tag-live">CHECK-IN KIOSK</div>
+    <h3>Scan &amp; Print</h3>
+    <p>Staff scan a badge (camera, uploaded photo, or manual entry). The kiosk shows a live
+    pending state until the printer confirms — never a false "Checked In."</p>
+  </a>
+  <a class="day-card" href="/badges">
+    <div class="day-tag">BADGES</div>
+    <h3>QR Attendee Passes</h3>
+    <p>Generate a scannable QR badge for every attendee, ready to print or send ahead of the event.</p>
+  </a>
+  <a class="day-card" href="/how-it-works">
+    <div class="day-tag">RELIABILITY</div>
+    <h3>How It Works</h3>
+    <p>Why this system can't double-print a badge, even when confirmations arrive late or out of order.</p>
+  </a>
+</div>
+
+<script src="/static/nav.js"></script>
+</body>
+</html>

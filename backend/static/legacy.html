@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Retired System — Solstice Check-In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css" />
+<link rel="stylesheet" href="/static/nav.css" />
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand" href="/">
+    <span class="badge-mark">SEC</span>
+    <span class="brand-name">Solstice Check-In</span>
+  </a>
+  <div class="nav-links">
+    <a href="/how-it-works">← Back to How It Works</a>
+    <a href="/kiosk">Current Kiosk</a>
+  </div>
+</nav>
+
+<div class="deprecated-banner">
+  <strong>Retired system.</strong> Kept online for reference only &mdash; this is the synchronous
+  version described on the <a href="/how-it-works" style="color:var(--red)">How It Works</a> page.
+  It's not connected to the current kiosk in any way.
+</div>
+
+<p class="pivot-note" style="margin-top:16px;">
+  Calls the printer directly and <strong>blocks</strong> until it responds. "Checked In" only
+  appears once that response arrives &mdash; there's no pending state and no recovery if the
+  printer is slow or fails.
+</p>
+
+<div class="qr-panel" id="qr-panel">
+  <div class="qr-panel-header">
+    <button class="qr-toggle" type="button">SCAN VIA CAMERA</button>
+    <label class="qr-file-label">
+      or upload a badge photo
+      <input type="file" accept="image/*" class="qr-file-input" />
+    </label>
+  </div>
+  <div class="qr-reader" id="qr-reader-day3"></div>
+  <div class="qr-status"></div>
+</div>
+
+<main class="kiosk-main" style="grid-template-columns: 1.4fr 1fr;">
+  <section class="attendee-grid" id="attendee-grid" aria-label="Attendees"></section>
+
+  <section class="log-panel" aria-label="Vendor call log">
+    <div class="log-header">
+      <span>SYNCHRONOUS VENDOR CALL LOG</span>
+      <button id="clear-log" class="ghost-btn">clear</button>
+    </div>
+    <div class="log-body" id="log-body"></div>
+  </section>
+</main>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="/static/qr-scanner.js"></script>
+<script src="/static/app_day3.js"></script>
+<script src="/static/nav.js"></script>
+</body>
+</html>
